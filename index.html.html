@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎓 Joy's Graduation — You're Invited!</title>
+<style>
+:root{
+  --coral:#ff5c8a; --teal:#00e5b0; --sun:#ffd93d; --violet:#7c5cff;
+  --ink:#f4f1ff; --dim:#b9b3d9;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:Georgia,'Times New Roman',serif;background:#0d0a24;color:var(--ink);
+  min-height:100vh;overflow-x:hidden;cursor:crosshair}
+
+/* ---------- AURORA + STARS BACKGROUND ---------- */
+.aurora{position:fixed;inset:0;z-index:0;overflow:hidden;background:#0d0a24}
+.blob{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(90px);opacity:.45;mix-blend-mode:screen}
+.b1{background:radial-gradient(circle,#ff5c8a,transparent 65%);top:-20vmax;left:-15vmax;animation:drift1 26s ease-in-out infinite alternate}
+.b2{background:radial-gradient(circle,#00e5b0,transparent 65%);bottom:-25vmax;right:-15vmax;animation:drift2 32s ease-in-out infinite alternate}
+.b3{background:radial-gradient(circle,#7c5cff,transparent 65%);top:30%;left:40%;animation:drift3 38s ease-in-out infinite alternate}
+.b4{background:radial-gradient(circle,#ffd93d,transparent 70%);bottom:-10vmax;left:20%;opacity:.18;animation:drift1 44s ease-in-out infinite alternate-reverse}
+@keyframes drift1{to{transform:translate(18vmax,14vmax) scale(1.25)}}
+@keyframes drift2{to{transform:translate(-16vmax,-12vmax) scale(1.15)}}
+@keyframes drift3{to{transform:translate(-14vmax,16vmax) scale(.85)}}
+.star{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;animation:tw 3s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.3)}}
+
+#fx{position:fixed;inset:0;pointer-events:none;z-index:80}
+#trail{position:fixed;inset:0;pointer-events:none;z-index:70}
+
+/* ---------- INTRO : THE FLYING CAP ---------- */
+#intro{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+  background:radial-gradient(ellipse at 50% 120%,#241a4d,#0d0a24 70%);transition:opacity .9s ease,visibility .9s}
+#intro.gone{opacity:0;visibility:hidden}
+.cap-stage{perspective:900px}
+#cap{width:min(300px,70vw);cursor:pointer;transform-style:preserve-3d;animation:capFloat 3s ease-in-out infinite;transition:transform .5s}
+#cap:hover{transform:scale(1.07) rotate(-4deg)}
+@keyframes capFloat{0%,100%{transform:translateY(0) rotateX(8deg)}50%{transform:translateY(-18px) rotateX(-8deg)}}
+#cap.launched{animation:launch 1s cubic-bezier(.5,-.3,.3,1.4) forwards}
+@keyframes launch{
+  30%{transform:translateY(-30vh) rotate(720deg) scale(1.3)}
+  100%{transform:translateY(-160vh) rotate(1440deg) scale(.4);opacity:0}}
+#intro h2{font-size:clamp(1.3rem,4vw,2rem);color:var(--sun);letter-spacing:.3em;text-transform:uppercase;
+  text-shadow:0 0 30px rgba(255,217,61,.6);animation:pulseTxt 2s ease-in-out infinite}
+@keyframes pulseTxt{50%{opacity:.55}}
+#intro p{color:var(--dim);font-style:italic}
+
+/* ---------- CONTENT ---------- */
+#content{position:relative;z-index:2;max-width:660px;margin:0 auto;padding:3.5rem 1.2rem 6rem;
+  opacity:0;transform:translateY(40px) scale(.97);transition:opacity 1s ease .2s,transform 1s ease .2s}
+#content.visible{opacity:1;transform:none}
+
+.card{position:relative;border-radius:30px;padding:2.8rem 1.8rem 2.4rem;text-align:center;
+  background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.22);box-shadow:0 30px 90px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.25);
+  transform-style:preserve-3d;will-change:transform}
+.card .glow{position:absolute;inset:-2px;border-radius:32px;background:conic-gradient(from var(--ga,0deg),var(--coral),var(--teal),var(--violet),var(--sun),var(--coral));
+  z-index:-1;filter:blur(18px);opacity:.5;animation:spinGlow 8s linear infinite}
+@property --ga{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes spinGlow{to{--ga:360deg}}
+
+.flower{position:absolute;opacity:.55;pointer-events:none;animation:flowerSway 6s ease-in-out infinite}
+.flower.f1{top:14px;left:14px;width:84px}
+.flower.f2{bottom:14px;right:14px;width:96px;animation-delay:-3s}
+.flower.f3{top:8px;right:26px;width:54px;animation-delay:-1.5s;opacity:.35}
+@keyframes flowerSway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+
+.grad-cap-hero{width:86px;margin:0 auto .4rem;animation:heroBob 3.4s ease-in-out infinite;filter:drop-shadow(0 8px 22px rgba(0,229,176,.45))}
+@keyframes heroBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+
+h1.name{font-size:clamp(2.1rem,7vw,3rem);line-height:1.1;margin:.2rem 0;
+  background:linear-gradient(92deg,var(--sun),var(--coral) 35%,var(--violet) 70%,var(--teal));
+  background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:sheen 5s linear infinite}
+@keyframes sheen{to{background-position:250% 0}}
+.sub{font-size:.85rem;letter-spacing:.42em;text-transform:uppercase;color:var(--teal);margin:.35rem 0 1rem;font-weight:bold}
+.llb{font-size:1.45rem;color:var(--sun);margin-bottom:.8rem;text-shadow:0 0 24px rgba(255,217,61,.35)}
+.invite-line{font-style:italic;color:var(--dim);max-width:410px;margin:0 auto 1.5rem;line-height:1.65}
+.datebox{display:inline-block;position:relative;border-radius:20px;padding:1rem 2.2rem;margin:.4rem 0 1.4rem;
+  background:linear-gradient(135deg,rgba(255,92,138,.22),rgba(124,92,255,.22));
+  border:1px solid rgba(255,255,255,.25);box-shadow:0 0 40px rgba(255,92,138,.25)}
+.datebox .big{font-size:clamp(1.35rem,4.5vw,1.9rem);font-weight:bold;color:#fff}
+.datebox .small{font-size:1rem;color:var(--sun);margin-top:.15rem}
+.detail{margin:.4rem 0;font-size:1.1rem;color:#e6e1ff}
+.detail b{color:var(--teal)}
+.map-link{color:var(--violet);text-decoration:none;border-bottom:1px dashed var(--violet)}
+.map-link:hover{color:var(--coral)}
+
+/* RSVP */
+.rsvp{margin-top:2.2rem}
+.rsvp .q{margin-bottom:.8rem;color:var(--sun);font-weight:bold;font-size:1.05rem}
+.rsvp input{width:100%;max-width:380px;padding:.95rem 1.2rem;border-radius:40px;font-size:1.05rem;font-family:inherit;
+  text-align:center;outline:none;margin-bottom:.8rem;color:#fff;
+  background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.35);transition:border .2s,box-shadow .2s}
+.rsvp input::placeholder{color:#8f88b8}
+.rsvp input:focus{border-color:var(--teal);box-shadow:0 0 25px rgba(0,229,176,.35)}
+.btn{cursor:pointer;border:none;border-radius:40px;padding:.95rem 2.4rem;font-size:1.05rem;font-family:inherit;font-weight:bold;
+  transition:transform .18s,box-shadow .18s;margin:.3rem;color:#1a1030}
+.btn-accept{background:linear-gradient(135deg,var(--sun),var(--coral));box-shadow:0 10px 30px rgba(255,92,138,.45)}
+.btn-accept:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 40px rgba(255,92,138,.6)}
+.btn-decline{background:transparent;color:var(--dim);border:1.5px solid rgba(255,255,255,.3)}
+.btn-decline:hover{color:#fff;border-color:#fff}
+#rsvpMsg{margin-top:.9rem;font-weight:bold;min-height:1.4rem}
+
+/* guest list */
+#guestSection{margin-top:3rem;text-align:center;position:relative;z-index:2}
+#guestSection h2{font-size:1.5rem;margin-bottom:.5rem;background:linear-gradient(90deg,var(--teal),var(--sun));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+#countPill{display:inline-block;padding:.4rem 1.4rem;border-radius:24px;font-weight:bold;color:#1a1030;
+  background:linear-gradient(90deg,var(--teal),var(--sun));box-shadow:0 6px 20px rgba(0,229,176,.35);margin-bottom:1.1rem}
+#guestList{list-style:none;max-width:430px;margin:0 auto;text-align:left}
+#guestList li{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);margin:.5rem auto;padding:.75rem 1.2rem;
+  border-radius:18px;display:flex;align-items:center;gap:.7rem;animation:pop .45s cubic-bezier(.2,1.6,.4,1);backdrop-filter:blur(6px)}
+@keyframes pop{from{opacity:0;transform:scale(.6) rotate(-3deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+#guestList li .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--sun),var(--coral));box-shadow:0 0 12px var(--coral);flex-shrink:0}
+#guestList li .time{margin-left:auto;font-size:.72rem;color:var(--dim)}
+
+/* falling flowers */
+.petal{position:fixed;top:-50px;z-index:1;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(115vh) rotate(340deg)}}
+
+/* ---------- CELEBRATION OVERLAY ---------- */
+#party{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;
+  background:rgba(13,10,36,.92);backdrop-filter:blur(6px)}
+#party.show{display:flex;animation:partyIn .4s ease}
+@keyframes partyIn{from{opacity:0}to{opacity:1}}
+.disco{position:absolute;top:6%;left:50%;transform:translateX(-50%);font-size:4.5rem;animation:discoSpin 3s linear infinite;
+  filter:drop-shadow(0 0 35px rgba(255,217,61,.8))}
+@keyframes discoSpin{to{transform:translateX(-50%) rotate(360deg)}}
+.dancers{position:absolute;bottom:8%;left:0;right:0;display:flex;justify-content:space-around;font-size:2.6rem}
+.dancers span{animation:dance .7s ease-in-out infinite;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+.dancers span:nth-child(2){animation-delay:.15s}.dancers span:nth-child(3){animation-delay:.3s}
+.dancers span:nth-child(4){animation-delay:.45s}.dancers span:nth-child(5){animation-delay:.6s}
+@keyframes dance{0%,100%{transform:translateY(0) rotate(-9deg) scale(1)}50%{transform:translateY(-26px) rotate(9deg) scale(1.12)}}
+.marquee{position:absolute;top:26%;left:0;right:0;overflow:hidden;white-space:nowrap}
+.marquee div{display:inline-block;font-size:clamp(1.2rem,4vw,2rem);font-weight:bold;color:var(--sun);
+  letter-spacing:.15em;text-transform:uppercase;animation:mq 12s linear infinite;text-shadow:0 0 25px rgba(255,217,61,.6)}
+@keyframes mq{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+.certificate{position:relative;z-index:2;background:linear-gradient(160deg,#fffdf4,#ffeecd);color:#3a2b18;max-width:440px;width:88vw;
+  border-radius:14px;padding:2rem 1.6rem 1.6rem;text-align:center;transform:rotate(-1.5deg);
+  box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 0 6px #fff,inset 0 0 0 8px #d4a017;animation:certIn .7s cubic-bezier(.2,1.8,.4,1)}
+@keyframes certIn{from{transform:rotate(-14deg) scale(.4);opacity:0}to{transform:rotate(-1.5deg) scale(1);opacity:1}}
+.certificate h3{font-size:1.15rem;letter-spacing:.28em;text-transform:uppercase;color:#8a6a1f;margin-bottom:.5rem}
+.certificate .whom{font-size:1.7rem;font-weight:bold;color:#b03a6b;margin:.4rem 0;font-style:italic}
+.certificate p{font-size:.92rem;line-height:1.55;color:#5a4632}
+.seal{width:74px;height:74px;margin:.9rem auto 0;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 30%,#ff8fa3,#c2185b 70%);color:#fff;font-size:1.9rem;
+  box-shadow:0 6px 16px rgba(194,24,91,.5),inset 0 2px 6px rgba(255,255,255,.4);animation:sealStamp .5s cubic-bezier(.2,2.5,.4,1) .6s both}
+@keyframes sealStamp{from{transform:scale(3);opacity:0}to{transform:scale(1) rotate(-8deg);opacity:1}}
+.cert-close{margin-top:1.1rem;background:#3a2b18;color:#ffeecd;border:none;border-radius:30px;padding:.6rem 1.8rem;
+  font-family:inherit;font-size:.95rem;cursor:pointer}
+.cert-close:hover{background:#b03a6b}
+.shake{animation:shake .5s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
+
+/* host */
+#hostBtn{position:fixed;bottom:12px;right:14px;z-index:60;font-size:.72rem;color:rgba(244,241,255,.4);background:none;
+  border:none;cursor:pointer;font-family:inherit;text-decoration:underline}
+#hostPanel{position:fixed;bottom:0;left:0;right:0;z-index:210;background:#191238;color:#f4f1ff;padding:1.2rem 1.2rem 2.4rem;
+  border-radius:26px 26px 0 0;transform:translateY(105%);transition:transform .5s ease;max-height:70vh;overflow-y:auto}
+#hostPanel.show{transform:translateY(0)}
+#hostPanel h3{color:var(--sun);margin-bottom:.6rem}
+#hostPanel table{width:100%;border-collapse:collapse;font-size:.85rem}
+#hostPanel th,#hostPanel td{padding:.45rem .5rem;border-bottom:1px solid rgba(255,255,255,.15);text-align:left}
+.host-actions{margin-top:.9rem;display:flex;gap:.6rem;flex-wrap:wrap}
+.host-actions button{cursor:pointer;border:none;border-radius:20px;padding:.55rem 1.2rem;font-family:inherit;font-weight:bold}
+#closeHost{background:#3a3560;color:#fff}
+#exportBtn{background:var(--teal);color:#12241f}
+#clearBtn{background:var(--coral);color:#fff}
+#hostSummary{font-size:.9rem;margin-bottom:.6rem;color:var(--dim)}
+</style>
+</head>
+<body>
+
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
+<canvas id="trail"></canvas>
+<canvas id="fx"></canvas>
+
+<!-- ======= INTRO : TAP THE CAP ======= -->
+<div id="intro">
+  <div class="cap-stage">
+    <svg id="cap" viewBox="0 0 200 170" aria-label="Graduation cap">
+      <defs>
+        <linearGradient id="capG" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#2b2358"/><stop offset="1" stop-color="#0f0c29"/>
+        </linearGradient>
+        <linearGradient id="tasselG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffd93d"/><stop offset="1" stop-color="#ff9f1c"/>
+        </linearGradient>
+      </defs>
+      <g id="tassel">
+        <path d="M100 52 Q 155 62 158 108" fill="none" stroke="url(#tasselG)" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="158" cy="108" r="7" fill="url(#tasselG)"/>
+        <path d="M150 116 L166 116 L173 148 L143 148 Z" fill="url(#tasselG)"/>
+      </g>
+      <polygon points="100,18 190,52 100,86 10,52" fill="url(#capG)" stroke="#7c5cff" stroke-width="2"/>
+      <polygon points="100,30 168,55 100,80 32,55" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
+      <circle cx="100" cy="52" r="5" fill="#ffd93d"/>
+      <path d="M52 60 L52 98 Q100 122 148 98 L148 60" fill="url(#capG)" stroke="#7c5cff" stroke-width="2"/>
+    </svg>
+  </div>
+  <h2>Tap the Cap to Open</h2>
+  <p>Joy is about to graduate… and you’re on the list 🎓</p>
+</div>
+
+<!-- ======= MAIN CONTENT ======= -->
+<main id="content">
+  <div class="card" id="card">
+    <div class="glow"></div>
+
+    <svg class="flower f1" viewBox="0 0 100 100"><g fill="none" stroke="#00e5b0" stroke-width="2">
+      <circle cx="50" cy="42" r="9"/><path d="M50 30 q12 -18 24 -6 q-14 4 -24 6z"/><path d="M50 30 q-12 -18 -24 -6 q14 4 24 6z"/>
+      <path d="M40 46 q-20 2 -18 18 q16 -6 22 -14z"/><path d="M60 46 q20 2 18 18 q-16 -6 -22 -14z"/>
+      <path d="M50 52 q0 24 -12 34 M50 52 q2 22 14 30"/></g></svg>
+    <svg class="flower f2" viewBox="0 0 100 100"><g fill="none" stroke="#ff5c8a" stroke-width="2">
+      <circle cx="50" cy="42" r="9"/><path d="M50 30 q12 -18 24 -6 q-14 4 -24 6z"/><path d="M50 30 q-12 -18 -24 -6 q14 4 24 6z"/>
+      <path d="M40 46 q-20 2 -18 18 q16 -6 22 -14z"/><path d="M60 46 q20 2 18 18 q-16 -6 -22 -14z"/>
+      <path d="M50 52 q0 24 -12 34 M50 52 q2 22 14 30"/></g></svg>
+    <svg class="flower f3" viewBox="0 0 100 100"><g fill="none" stroke="#ffd93d" stroke-width="2">
+      <circle cx="50" cy="42" r="9"/><path d="M50 30 q12 -18 24 -6 q-14 4 -24 6z"/><path d="M50 30 q-12 -18 -24 -6 q14 4 24 6z"/>
+      <path d="M40 46 q-20 2 -18 18 q16 -6 22 -14z"/><path d="M60 46 q20 2 18 18 q-16 -6 -22 -14z"/></g></svg>
+
+    <svg class="grad-cap-hero" viewBox="0 0 200 170">
+      <g><polygon points="100,18 190,52 100,86 10,52" fill="#221a4a" stroke="#00e5b0" stroke-width="3"/>
+      <circle cx="100" cy="52" r="6" fill="#ffd93d"/>
+      <path d="M158 58 Q162 84 158 106" fill="none" stroke="#ff5c8a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M150 108 L166 108 L172 142 L144 142 Z" fill="#ff5c8a"/>
+      <path d="M52 60 L52 98 Q100 122 148 98 L148 60" fill="#221a4a" stroke="#00e5b0" stroke-width="3"/></g>
+    </svg>
+
+    <h1 class="name">Joy Wairimu Mbugua</h1>
+    <p class="sub">Bachelor of Laws • LLB</p>
+    <p class="llb">🎓 Graduation Celebration 🎓</p>
+    <p class="invite-line">"You are cordially invited to share this beautiful and very special moment with me on the day"</p>
+
+    <div class="datebox">
+      <div class="big">Sunday, 25th October 2026</div>
+      <div class="small">from 11:00 AM sharp ⏰</div>
+    </div>
+    <p class="detail">📍 <b>Charis Gardens, Kikuyu</b></p>
+    <p class="detail">🎓 Class of 2026 — She showed up, she studied, she conquered 📚👑</p>
+
+    <div class="rsvp">
+      <p class="q">So… are we celebrating together or what? 😄</p>
+      <input type="text" id="guestName" placeholder="Type your name here" maxlength="60">
+      <br>
+      <button class="btn btn-accept" id="acceptBtn">🎉 Heck Yes, I’m Coming!</button>
+      <button class="btn btn-decline" id="declineBtn">😢 Sadly Can’t Make It</button>
+      <p id="rsvpMsg"></p>
+    </div>
+  </div>
+
+  <section id="guestSection">
+    <h2>💐 The Cool People Who Said Yes</h2>
+    <div id="countPill"><span id="acceptCount">0</span> legends confirmed</div>
+    <ul id="guestList"></ul>
+  </section>
+</main>
+
+<!-- ======= PARTY OVERLAY ======= -->
+<div id="party">
+  <div class="disco">🪩</div>
+  <div class="marquee"><div>🎓 OFFICIAL PARTY PEOPLE ONLY 🎓 JOY LEVELED UP TO LAWYER STATUS 🎓 BRING YOUR DANCING SHOES 🎓 CAKE IS MANDATORY 🎓&nbsp;</div></div>
+  <div class="dancers"><span>🕺</span><span>💃</span><span>🎓</span><span>🕺</span><span>💃</span></div>
+  <div class="certificate" id="cert">
+    <h3>📜 Official Certificate 📜</h3>
+    <p>This is to certify that</p>
+    <div class="whom" id="certName">Guest</div>
+    <p>has been <b>LEGALLY OBLIGATED</b> to attend Joy Wairimu Mbugua’s LLB Graduation on <b>Sunday, 25th October 2026</b> at <b>Charis Gardens, Kikuyu</b> — and is hereby sentenced to a minimum of <b>three (3) hours of dancing</b>, <b>unlimited cake consumption</b>, and <b>at least one embarrassing graduation photo</b>. 🎂📸</p>
+    <p style="margin-top:.6rem;font-size:.8rem;color:#8a6a1f">*This certificate is 100% legally binding in the court of Joy. No appeals. See you there. ⚖️😂</p>
+    <div class="seal">⚖️</div>
+    <button class="cert-close" id="certClose">Back to the invitation</button>
+  </div>
+</div>
+
+<button id="hostBtn">Host view</button>
+<div id="hostPanel">
+  <h3>🔐 Host Panel — Joy’s local RSVP records</h3>
+  <p id="hostSummary"></p>
+  <table><thead><tr><th>#</th><th>Guest</th><th>Status</th><th>Responded at</th></tr></thead><tbody id="hostRows"></tbody></table>
+  <div class="host-actions">
+    <button id="exportBtn">⬇ Export CSV</button>
+    <button id="clearBtn">🗑 Clear all</button>
+    <button id="closeHost">Close</button>
+  </div>
+</div>
+
+<script>
+const KEY='joyGradGuests_v2';
+const load=()=>JSON.parse(localStorage.getItem(KEY)||'[]');
+const save=d=>localStorage.setItem(KEY,JSON.stringify(d));
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* stars */
+const aur=document.querySelector('.aurora');
+for(let i=0;i<70;i++){const s=document.createElement('div');s.className='star';
+  s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+  s.style.animationDelay=(Math.random()*3)+'s';s.style.width=s.style.height=(1+Math.random()*2.5)+'px';aur.appendChild(s);}
+
+/* confetti */
+const fx=document.getElementById('fx'),ctx=fx.getContext('2d');let parts=[];
+function sizeFx(){fx.width=innerWidth;fx.height=innerHeight}sizeFx();addEventListener('resize',sizeFx);
+const COLORS=['#ff5c8a','#00e5b0','#ffd93d','#7c5cff','#ffffff','#ff9f1c'];
+function burst(n=160,x=innerWidth/2,y=innerHeight/2){
+  for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=4+Math.random()*10;
+    parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-5,g:.24,w:5+Math.random()*8,h:8+Math.random()*10,
+      c:COLORS[i%COLORS.length],rot:Math.random()*Math.PI,vr:(Math.random()-.5)*.35,life:130+Math.random()*90,shape:i%3});}}
+let shakeT=0;
+(function loop(){ctx.clearRect(0,0,fx.width,fx.height);
+  parts=parts.filter(p=>p.life>0);
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.99;p.rot+=p.vr;p.life--;
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;ctx.globalAlpha=Math.min(1,p.life/45);
+    if(p.shape===0)ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+    else if(p.shape===1){ctx.beginPath();ctx.arc(0,0,p.w/2,0,7);ctx.fill();}
+    else{ctx.beginPath();ctx.moveTo(0,-p.h/2);ctx.lineTo(p.w/2,p.h/2);ctx.lineTo(-p.w/2,p.h/2);ctx.closePath();ctx.fill();}
+    ctx.restore();});
+  requestAnimationFrame(loop);})();
+
+/* cursor sparkle trail */
+const tr=document.getElementById('trail'),tctx=tr.getContext('2d');let sparks=[];
+function sizeTr(){tr.width=innerWidth;tr.height=innerHeight}sizeTr();addEventListener('resize',sizeTr);
+let lastMove=0;
+addEventListener('pointermove',e=>{const now=performance.now();if(now-lastMove<28)return;lastMove=now;
+  sparks.push({x:e.clientX,y:e.clientY,vx:(Math.random()-.5)*1.4,vy:-.6-Math.random()*1.2,
+    r:1.5+Math.random()*3,c:COLORS[Math.floor(Math.random()*COLORS.length)],life:40+Math.random()*25});
+  if(sparks.length>130)sparks.shift();});
+(function tloop(){tctx.clearRect(0,0,tr.width,tr.height);
+  sparks=sparks.filter(s=>s.life>0);
+  sparks.forEach(s=>{s.x+=s.vx;s.y+=s.vy;s.life--;tctx.globalAlpha=s.life/50;tctx.fillStyle=s.c;
+    tctx.beginPath();tctx.arc(s.x,s.y,s.r,0,7);tctx.fill();});
+  tctx.globalAlpha=1;requestAnimationFrame(tloop);})();
+
+/* card 3D tilt */
+const card=document.getElementById('card');
+card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect();
+  const rx=((e.clientY-r.top)/r.height-.5)*-8,ry=((e.clientX-r.left)/r.width-.5)*8;
+  card.style.transform=`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;});
+card.addEventListener('pointerleave',()=>card.style.transform='perspective(900px)');
+
+/* intro */
+const intro=document.getElementById('intro'),content=document.getElementById('content');
+document.getElementById('cap').addEventListener('click',function(){
+  fanfare();this.classList.add('launched');burst(200);
+  setTimeout(()=>{intro.classList.add('gone');content.classList.add('visible');
+    setTimeout(()=>burst(140,innerWidth/2,innerHeight*.3),400);startPetals();},950);});
+
+/* petals */
+function startPetals(){setInterval(()=>{
+  if(document.hidden)return;const p=document.createElement('div');p.className='petal';
+  p.innerHTML=['🌸','🌺','✨','💛','🎈','⚖️'][Math.floor(Math.random()*6)];
+  p.style.left=Math.random()*100+'vw';p.style.animationDuration=(6+Math.random()*9)+'s';
+  p.style.fontSize=(1+Math.random()*1.3)+'rem';document.body.appendChild(p);
+  setTimeout(()=>p.remove(),16000);},850);}
+
+/* synthesized fanfare + party horn (WebAudio, no files needed) */
+function fanfare(){
+  try{
+    const ac=new (window.AudioContext||window.webkitAudioContext)();
+    const notes=[523.25,659.25,783.99,1046.5];
+    notes.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();
+      o.type='triangle';o.frequency.value=f;
+      g.gain.setValueAtTime(0,ac.currentTime+i*.13);
+      g.gain.linearRampToValueAtTime(.22,ac.currentTime+i*.13+.02);
+      g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+i*.13+.5);
+      o.connect(g).connect(ac.destination);o.start(ac.currentTime+i*.13);o.stop(ac.currentTime+i*.13+.55);});
+    const o2=ac.createOscillator(),g2=ac.createGain();
+    o2.type='sawtooth';o2.frequency.setValueAtTime(600,ac.currentTime+.6);
+    o2.frequency.linearRampToValueAtTime(950,ac.currentTime+1.4);
+    g2.gain.setValueAtTime(.001,ac.currentTime+.6);g2.gain.linearRampToValueAtTime(.12,ac.currentTime+.7);
+    g2.gain.linearRampToValueAtTime(.001,ac.currentTime+1.5);
+    o2.connect(g2).connect(ac.destination);o2.start(ac.currentTime+.6);o2.stop(ac.currentTime+1.5);
+  }catch(e){}
+}
+
+/* RSVP */
+const msg=document.getElementById('rsvpMsg'),party=document.getElementById('party');
+function render(){
+  const d=load(),accepted=d.filter(g=>g.status==='accepted');
+  document.getElementById('acceptCount').textContent=accepted.length;
+  const ul=document.getElementById('guestList');ul.innerHTML='';
+  accepted.forEach(g=>{const li=document.createElement('li');
+    li.innerHTML='<span class="dot"></span><span>'+esc(g.name)+'</span><span class="time">'+new Date(g.at).toLocaleDateString()+'</span>';
+    ul.appendChild(li);});
+}
+document.getElementById('acceptBtn').addEventListener('click',()=>{
+  const inp=document.getElementById('guestName'),name=inp.value.trim();
+  if(!name){msg.style.color='#ff5c8a';msg.textContent='Hold up — Joy needs a name to put on your certificate! 😄';return;}
+  const d=load();
+  if(d.some(g=>g.name.toLowerCase()===name.toLowerCase()&&g.status==='accepted')){
+    msg.style.color='#7c5cff';msg.textContent='You already said yes, '+esc(name)+'! Greedy for certificates? 😂';return;}
+  d.push({name,status:'accepted',at:new Date().toISOString()});save(d);render();
+  msg.style.color='#00e5b0';msg.textContent='🎉 Certified! Scroll down to see your name among the legends.';
+  /* THE STUNNING & FUNNY MOMENT */
+  document.getElementById('certName').textContent=name;
+  fanfare();party.classList.add('show');
+  burst(260,innerWidth*.2,innerHeight*.25);setTimeout(()=>burst(260,innerWidth*.8,innerHeight*.3),250);
+  setTimeout(()=>burst(300,innerWidth/2,innerHeight*.15),500);
+  const cert=document.getElementById('cert');cert.classList.remove('shake');void cert.offsetWidth;cert.classList.add('shake');
+  inp.value='';});
+document.getElementById('certClose').addEventListener('click',()=>party.classList.remove('show'));
+document.getElementById('declineBtn').addEventListener('click',()=>{
+  const inp=document.getElementById('guestName'),name=inp.value.trim();
+  if(!name){msg.style.color='#ff5c8a';msg.textContent='Please enter your name first';return;}
+  const d=load();d.push({name,status:'declined',at:new Date().toISOString()});save(d);
+  msg.style.color='#b9b3d9';msg.textContent='Aww '+esc(name)+', Joy forgives you… but the cake won’t. 🍰😢';inp.value='';});
+
+/* host panel */
+const panel=document.getElementById('hostPanel');
+document.getElementById('hostBtn').addEventListener('click',()=>{
+  const d=load(),acc=d.filter(g=>g.status==='accepted').length;
+  document.getElementById('hostSummary').textContent=acc+' accepted / '+(d.length-acc)+' declined — stored locally on this device.';
+  const tb=document.getElementById('hostRows');tb.innerHTML='';
+  d.forEach((g,i)=>{const tr2=document.createElement('tr');
+    tr2.innerHTML='<td>'+(i+1)+'</td><td>'+esc(g.name)+'</td><td>'+g.status+'</td><td>'+new Date(g.at).toLocaleString()+'</td>';
+    tb.appendChild(tr2);});
+  panel.classList.add('show');});
+document.getElementById('closeHost').addEventListener('click',()=>panel.classList.remove('show'));
+document.getElementById('clearBtn').addEventListener('click',()=>{
+  if(confirm('Clear ALL RSVP records on this device?')){localStorage.removeItem(KEY);render();panel.classList.remove('show');}});
+document.getElementById('exportBtn').addEventListener('click',()=>{
+  const d=load();if(!d.length){alert('No records yet.');return;}
+  const csv='Name,Status,Responded At\n'+d.map(g=>'"'+g.name.replace(/"/g,'""')+'",'+g.status+','+g.at).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='joy_graduation_rsvp.csv';a.click();});
+
+render();
+</script>
+</body>
+</html>
